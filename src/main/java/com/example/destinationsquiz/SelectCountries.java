@@ -15,31 +15,44 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class SelectCountries {
-       public static Scene CreateSelectCountriesScene(Stage primaryStage) throws IOException{
-           VBox mainPane = new VBox();
-           ArrayList<Button> countriesButtons = new ArrayList<>();
-           BufferedReader reader;
-               reader = new BufferedReader(new FileReader("TextFiles/countries.txt"));
-               String name;
-               while ((name = reader.readLine()) != null) {
-                   Button btn = new Button(name);
-                   btn.setPrefWidth(150);
-                   btn.setPrefHeight(70);
-                   countriesButtons.add(btn);
-               }
-               GridPane grid = new GridPane();
-               int counter = 0;
-               for (int i=0;i<3;i++){
-                   for (int j=0; j<3; j++){
-                       grid.add(countriesButtons.get(counter),j,i);
-                       counter++;
-                   }
-               }
-               grid.setAlignment(Pos.CENTER);
-               grid.setHgap(20);
-               grid.setVgap(20);
-               mainPane.setAlignment(Pos.CENTER);
-               mainPane.getChildren().add(grid);
-           return new Scene(mainPane,1200,700);
-       }
+    private static ArrayList<Button> countriesButtons = new ArrayList<>();
+
+    public static Scene CreateSelectCountriesScene(Stage primaryStage) throws IOException {
+        VBox mainPane = new VBox();
+        Quiz quiz = new Quiz();
+
+        BufferedReader reader;
+        reader = new BufferedReader(new FileReader("TextFiles/countries.txt"));
+        String name;
+        while ((name = reader.readLine()) != null) {
+            Button btn = new Button(name);
+            btn.setOnAction(e -> {
+                quiz.loadQuiz(btn);
+            });
+            btn.setPrefWidth(150);
+            btn.setPrefHeight(70);
+            countriesButtons.add(btn);
+        }
+        GridPane grid = new GridPane();
+        int counter = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                grid.add(countriesButtons.get(counter), j, i);
+                counter++;
+            }
+        }
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(20);
+        grid.setVgap(20);
+        mainPane.setAlignment(Pos.CENTER);
+        mainPane.getChildren().add(grid);
+
+
+        return new Scene(mainPane, 1200, 700);
+    }
+
+    public static ArrayList<Button> getCountriesButtons() {
+        return countriesButtons;
+    }
+
 }
