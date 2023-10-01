@@ -19,9 +19,11 @@ import java.util.ArrayList;
 
 public class Quiz {
 
-    private final int NUMBEROFQUESTIONS = 5;
-    private final int NUMBEROFOPTIONS = 4;
-    private final int QUESTIONLENGTH = NUMBEROFQUESTIONS * (NUMBEROFOPTIONS +1);
+    final static int NUMBEROFQUESTIONS = 5;
+    final static int NUMBEROFOPTIONS = 4;
+    final static int QUESTIONLENGTH = NUMBEROFQUESTIONS * (NUMBEROFOPTIONS +1);
+
+    static String countrySelected = null;
 
     private ArrayList<ToggleGroup> questionGroup = new ArrayList<ToggleGroup>();
     private Scene scene;
@@ -37,7 +39,7 @@ public class Quiz {
         submitButton.setOnAction(e->{
             try {
                 onSubmit();
-            } catch (FileNotFoundException ex) {
+            } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
@@ -51,10 +53,10 @@ public class Quiz {
     public void loadQuiz(Button btn) throws IOException {
         System.out.println("Clicked Checkpoint #2");
         BufferedReader reader;
-        String buttonClicked = btn.getText();
+        countrySelected = btn.getText();
         reader = new BufferedReader(new FileReader("TextFiles/questions.txt"));
         String line = reader.readLine();
-        while (!(line.equals(buttonClicked))){
+        while (!(line.equals(countrySelected))){
             line = reader.readLine();
         }
             for (int j =0; j < NUMBEROFQUESTIONS; j++){
@@ -75,7 +77,7 @@ public class Quiz {
     System.out.println("Clicked Checkpoint #3");
     }
 
-    public void onSubmit() throws FileNotFoundException {
+    public void onSubmit() throws IOException {
         ArrayList<String> answers = new ArrayList<>();
         System.out.println("IN OON SUBMIT");
         for (ToggleGroup question : questionGroup){
@@ -83,6 +85,6 @@ public class Quiz {
             answers.add(selectedAns.getText());
         }
         Answer ans = new Answer();
-        ans.checkAnswer();
+        ans.checkAnswer(answers);
     }
 }
