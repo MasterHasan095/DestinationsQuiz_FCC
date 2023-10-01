@@ -35,7 +35,11 @@ public class Quiz {
     public void CreateQuizScene(){
         Button submitButton = new Button("SUBMIT");
         submitButton.setOnAction(e->{
-            onSubmit();
+            try {
+                onSubmit();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         });
         System.out.println("Clicked Checkpoint #4");
         root.getChildren().add(submitButton);
@@ -71,11 +75,14 @@ public class Quiz {
     System.out.println("Clicked Checkpoint #3");
     }
 
-    public void onSubmit(){
+    public void onSubmit() throws FileNotFoundException {
+        ArrayList<String> answers = new ArrayList<>();
         System.out.println("IN OON SUBMIT");
         for (ToggleGroup question : questionGroup){
             RadioButton selectedAns = (RadioButton) question.getSelectedToggle();
-            System.out.println(selectedAns.getText());
+            answers.add(selectedAns.getText());
         }
+        Answer ans = new Answer();
+        ans.checkAnswer();
     }
 }
