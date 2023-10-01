@@ -1,14 +1,14 @@
 package com.example.destinationsquiz;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Answer {
@@ -45,7 +45,36 @@ public class Answer {
             Label lbl4 = new Label("Your score was : " + score);
             finalVBOX.getChildren().addAll(lbl1,lbl2,lbl3,lbl4);
         }
+        else{
+            Label hurrah = new Label("Hurrah, you scored 5/5");
+            HBox nameHbox = new HBox();
+            Label nameLabel = new Label("Name : ");
+            TextField nameTfield = new TextField();
+            nameHbox.getChildren().addAll(nameLabel,nameTfield);
+            HBox numberHbox = new HBox();
+            Label numberLabel = new Label("Student Id : ");
+            TextField numberTfield = new TextField();
+            numberHbox.getChildren().addAll(numberLabel,numberTfield);
+
+            Button addToFile = new Button("ADD NAME TO DRAW");
+
+            addToFile.setOnAction(e->{
+                try {
+                    addToFile(nameTfield.getText(),numberTfield.getText());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            finalVBOX.getChildren().addAll(hurrah,nameHbox,numberHbox,addToFile);
+
+        }
         return new Scene(finalVBOX,1000,1000);
     }
 
+    public void addToFile(String name, String number) throws IOException {
+        BufferedWriter writer;
+        writer = new BufferedWriter(new FileWriter("TextFiles/luckyDraw.txt"));
+        writer.write("Name : " + name + " ; Number : " + number);
+        writer.close();
+    }
 }
