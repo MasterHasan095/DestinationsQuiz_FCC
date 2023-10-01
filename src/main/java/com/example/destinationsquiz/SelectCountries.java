@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +28,13 @@ public class SelectCountries {
         while ((name = reader.readLine()) != null) {
             Button btn = new Button(name);
             btn.setOnAction(e -> {
-                quiz.loadQuiz(btn);
+                try {
+                    quiz.loadQuiz(btn);
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             });
             btn.setPrefWidth(150);
             btn.setPrefHeight(70);
@@ -51,8 +58,6 @@ public class SelectCountries {
         return new Scene(mainPane, 1200, 700);
     }
 
-    public static ArrayList<Button> getCountriesButtons() {
-        return countriesButtons;
-    }
+
 
 }
