@@ -20,7 +20,7 @@ public class SelectCountries {
 
     public static Scene CreateSelectCountriesScene(Stage primaryStage) throws IOException {
         VBox mainPane = new VBox();
-        Quiz quiz = new Quiz();
+        Quiz quiz = new Quiz(primaryStage);
 
         BufferedReader reader;
         reader = new BufferedReader(new FileReader("TextFiles/countries.txt"));
@@ -28,6 +28,7 @@ public class SelectCountries {
         while ((name = reader.readLine()) != null) {
             Button btn = new Button(name);
             btn.setOnAction(e -> {
+                System.out.println("Clicked Checkpoint #1");
                 try {
                     quiz.loadQuiz(btn);
                 } catch (FileNotFoundException ex) {

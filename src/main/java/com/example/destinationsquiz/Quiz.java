@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Quiz {
 
@@ -22,15 +23,29 @@ public class Quiz {
     private final int NUMBEROFOPTIONS = 4;
     private final int QUESTIONLENGTH = NUMBEROFQUESTIONS * (NUMBEROFOPTIONS +1);
 
+    private ArrayList<ToggleGroup> questionGroup = new ArrayList<ToggleGroup>();
     private Scene scene;
     private static ScrollPane rootScroll = new ScrollPane();
     private static VBox root = new VBox();
-private Stage primaryStage;
+    private Stage primaryStage;
+
+    public Quiz(Stage primaryStage){
+        this.primaryStage = primaryStage;
+    }
     public void CreateQuizScene(){
-        rootScroll.setContent(root);setScene(rootScroll);
+        Button submitButton = new Button("SUBMIT");
+        submitButton.setOnAction(e->{
+            onSubmit();
+        });
+        System.out.println("Clicked Checkpoint #4");
+        root.getChildren().add(submitButton);
+        rootScroll.setContent(root);
+        primaryStage.setScene(new Scene(rootScroll,1200,700));
+        System.out.println("Clicked Checkpoint #5");
     }
 
     public void loadQuiz(Button btn) throws IOException {
+        System.out.println("Clicked Checkpoint #2");
         BufferedReader reader;
         String buttonClicked = btn.getText();
         reader = new BufferedReader(new FileReader("TextFiles/questions.txt"));
@@ -38,7 +53,6 @@ private Stage primaryStage;
         while (!(line.equals(buttonClicked))){
             line = reader.readLine();
         }
-        for (int i = 0; i < QUESTIONLENGTH; i++){
             for (int j =0; j < NUMBEROFQUESTIONS; j++){
                 VBox questionVBOX = new VBox();
                 ToggleGroup question = new ToggleGroup();
@@ -50,9 +64,18 @@ private Stage primaryStage;
                     radioButton.setToggleGroup(question);
                     questionVBOX.getChildren().add(radioButton);
                 }
+                questionGroup.add(question);
                 root.getChildren().add(questionVBOX);
-            }
         }
     CreateQuizScene();
+    System.out.println("Clicked Checkpoint #3");
+    }
+
+    public void onSubmit(){
+        System.out.println("IN OON SUBMIT");
+        for (ToggleGroup question : questionGroup){
+            RadioButton selectedAns = (RadioButton) question.getSelectedToggle();
+            System.out.println(selectedAns.getText());
+        }
     }
 }
