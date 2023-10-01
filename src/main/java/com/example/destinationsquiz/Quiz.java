@@ -85,6 +85,8 @@ public class Quiz {
             answers.add(selectedAns.getText());
         }
         Answer ans = new Answer();
-        ans.checkAnswer(answers);
+        int Score = ans.checkAnswer(answers);
+        Scene finalScene = ans.scoreCheck(Score);
+        primaryStage.setScene(finalScene);
     }
 }
