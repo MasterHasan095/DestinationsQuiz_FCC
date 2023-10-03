@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -20,7 +21,7 @@ public class SelectCountries {
 
     public static Scene CreateSelectCountriesScene(Stage primaryStage) throws IOException {
         VBox mainPane = new VBox();
-        Quiz quiz = new Quiz(primaryStage);
+        Quiz quiz = new Quiz();
 
         BufferedReader reader;
         reader = new BufferedReader(new FileReader("TextFiles/countries.txt"));
@@ -30,15 +31,17 @@ public class SelectCountries {
             btn.setOnAction(e -> {
                 System.out.println("Clicked Checkpoint #1");
                 try {
-                    quiz.loadQuiz(btn);
+                    quiz.loadQuiz(btn, primaryStage);
                 } catch (FileNotFoundException ex) {
                     throw new RuntimeException(ex);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
             });
-            btn.setPrefWidth(150);
-            btn.setPrefHeight(70);
+            btn.setPrefWidth(180);
+            btn.setPrefHeight(100);
+            btn.setFont(Font.font(23));
+            btn.getStyleClass().add("countryButton");
             countriesButtons.add(btn);
         }
         GridPane grid = new GridPane();
@@ -54,7 +57,7 @@ public class SelectCountries {
         grid.setVgap(20);
         mainPane.setAlignment(Pos.CENTER);
         mainPane.getChildren().add(grid);
-
+        mainPane.getStyleClass().add("mainPane");
 
         return new Scene(mainPane, 1200, 700);
     }
